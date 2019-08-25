@@ -9,42 +9,50 @@ use Automattic\WooCommerce\Client;
 
 $cli = new Client("http://www.lojadocartolafc.com.br", "ck_073dd3b2e4d1dfb0ce78d721f3d133b3edcc77da", "cs_aa43eb6378e53ff458ee76d01e6cd988d9c05a9d");
 
-$data = ['payment_method' => 'bacs',
-'payment_method_title' => 'Direct Bank Transfer',
-'set_paid' => true,
-'billing' => [
-    'first_name' => 'PRIMEIRO NOME',
-    'last_name' => 'ÚLTIMO NOME',
-    'address_1' => '969 Market',
-    'address_2' => '',
-    'city' => 'San Francisco',
-    'state' => 'CA',
-    'postcode' => '94103',
-    'country' => 'US',
-    'email' => 'john.doe@example.com',
-    'phone' => '(555) 555-5555'
-],
-'shipping' => [
-    'first_name' => 'John',
-    'last_name' => 'Doe',
-    'address_1' => '969 Market',
-    'address_2' => '',
-    'city' => 'San Francisco',
-    'state' => 'CA',
-    'postcode' => '94103',
-    'country' => 'US'
-],
-'line_items' => [
-    [
-        'product_id' => 93,
-        'quantity' => 2
-    ],
-    [
-        'product_id' => 22,
-        'variation_id' => 23,
-        'quantity' => 1
+
+$todayOrder = [
+    'produto' => [
+        'nome'              => 'Camisa Goleiro',
+        'personalizacao'    => [
+            'tam'   => ['1', '2', '3'],
+            'nome'  => ['joao', 'jose', 'agnaldo'],
+            'num'   => ['12', '45', '30']
+        ],
+        'imagem'            => 'http://[bla].jpg',
+        'quantidade'        => '3',
+        'valor'             => '39'
     ]
-]
 ];
 
-$cli->post('orders', $data);
+$picaOrder = [
+    'billing'       => [
+        'first_name' => 'Teste_01'
+    ],
+    'line_items'    => [
+        [
+            'name'      => 'Camisa Goleiro',
+            'quantity'  => 3,
+            'price'     => '39,00',
+            'meta_data' => [
+                'tam'   => ['1', '2', '3'],
+                'nome'  => ['joao', 'jose', 'agnaldo'],
+                'num'   => ['12', '45', '30'],
+                'img'   => 'www.google.com'
+            ]
+        ]
+    ]
+];
+
+$data = [
+    'line_items' => [
+        [
+            'name'  => 'Camisa - editada',
+            'product_id' => 74,
+            'quantity' => 3,
+            'tam'   => 1
+        ]
+    ]
+];
+
+$nota = ['note' => 'NOTA NOTA NOTA NOTA NOTA NOTA NOTA NOTA NOTA NOTA NOTA NOTA NOTA NOTA NOTA'];
+$cli->post('orders/321/notes', $nota);
