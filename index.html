@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TESTE de Chamada</title>
+</head>
+<body>
+<a href="" onclick="return ajaxFunction();">Teste onclick</a>
+</body>
+</html>
+
+<script
+  src="https://code.jquery.com/jquery-1.12.4.min.js"
+  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+  crossorigin="anonymous"></script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+
+
+<script>
+
+function ajaxFunction() {
+$.ajax({
+url:'middleware/index.php',
+complete: function (response) {
+alert("FOI");
+},
+error: function () {
+alert('Erro');
+}
+});
+
+return false;
+}
+
+</script>
