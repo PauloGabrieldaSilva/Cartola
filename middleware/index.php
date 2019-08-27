@@ -10,9 +10,20 @@ use Automattic\WooCommerce\Client;
 function customOrdered(array $size, array $name, array $number) {
     $orderedCustom = '';
     for ($i=0; $i < count($size) ; $i++) { 
-        $orderedCustom .= "Tamanho: {$size[$i]}, Nome: {$name[$i]}, Número: {$number[$i]}<br>";
+        $orderedCustom .= "<strong>Tamanho:</strong> {$size[$i]}, <strong>Nome:</strong> {$name[$i]}, <strong>Número:</strong> {$number[$i]}<br>";
     }
     return $orderedCustom;
+}
+
+function productSync(array $prods, $nameFromApi) {
+    foreach ($prods as $name => $id) {
+        if ($name == $nameFromApi) {
+            $prodId = $id;
+        } else {
+            continue;
+        }
+    }
+    return $prodId;
 }
 
 $cli = new Client("http://www.lojadocartolafc.com.br", "ck_073dd3b2e4d1dfb0ce78d721f3d133b3edcc77da", "cs_aa43eb6378e53ff458ee76d01e6cd988d9c05a9d");
@@ -22,19 +33,13 @@ $jsonStr = '{"pedido": {"cliente": {"nome_cliente":"nome do cliente", "email":"c
 $jsonObj = json_decode($jsonStr);
 
 $items = [];
+$prods = [
+    'Camisa - Futebol Masculino' => 74,
+    'Camisa - Futebol Masculino - Goleiro' => 327
+];
 
 foreach ($jsonObj->pedido->produto as $prod) {
-    switch ($prod->nome_produto) {
-        case 'Camisa - Futebol Masculino':
-            $prodID = 74;
-            break;
-        case 'Camisa - Futebol Masculino - Goleiro':
-            $prodID = 327;
-            break;
-        default:
-            $prodID = 000;
-    }
-
+    $prodID = productSync($prods, $prod->nome_produto);
     $item = [
         'product_id' => $prodID,
         'quantity' => $prod->quantidade,
